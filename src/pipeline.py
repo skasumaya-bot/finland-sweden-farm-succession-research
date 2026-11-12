@@ -18,10 +18,13 @@ def generate(seed=42, n_farms=800):
     })
     records = []
     histories = []
+    transfer_details = {}
     for f in farms.itertuples(index=False):
         transfer_year = int(rng.integers(2005, 2020)) if rng.random() < .68 else None
         mode = rng.choice(["inheritance", "gift", "market_sale", "other"], p=[.30, .22, .40, .08]) if transfer_year else None
         family = bool(mode in ("inheritance", "gift") or (mode == "market_sale" and rng.random() < .16)) if mode else False
+        if transfer_year is not None:
+            transfer_details[f.farm_id] = (transfer_year, mode, int(family))
         old = f"P{f.farm_id:05d}A"
         new = f"P{f.farm_id:05d}B"
         farm_effect = rng.normal(0, 1.7)
@@ -35,18 +38,11 @@ def generate(seed=42, n_farms=800):
             histories.append((f.farm_id, y, owner, "owner_register_simulated"))
     panel = pd.DataFrame(records, columns=["farm_id", "country", "region", "year", "hectares", "owner_id", "investment_rate_pct", "productivity_index", "sweden_post_2005"])
     ownership = pd.DataFrame(histories, columns=["farm_id", "year", "owner_id", "source"])
-    transfers = []
-    for f in farms.itertuples(index=False):
-        rows = panel.loc[panel.farm_id.eq(f.farm_id)].sort_values("year")
-        changed = rows.owner_id.ne(rows.owner_id.shift())
-        for row in rows.loc[changed & rows.year.gt(years[0])].itertuples(index=False):
-            transfers.append((f.farm_id, row.year))
-    events = pd.DataFrame(transfers, columns=["farm_id", "transfer_year"])
-    if len(events):
-        event_rng = np.random.default_rng(seed + 1)
-        events["transfer_mode"] = event_rng.choice(["inheritance", "gift", "market_sale", "other"], len(events), p=[.30, .22, .40, .08])
-        events["family_transfer"] = np.where(events.transfer_mode.isin(["inheritance", "gift"]), 1, event_rng.binomial(1, .16, len(events)))
-        events["classification_source"] = "synthetic_transfer_registry"
+    events = pd.DataFrame(
+        [(farm_id, year, mode, family) for farm_id, (year, mode, family) in transfer_details.items()],
+        columns=["farm_id", "transfer_year", "transfer_mode", "family_transfer"],
+    )
+    events["classification_source"] = "synthetic_transfer_registry"
     DATA.mkdir(exist_ok=True)
     OUT.mkdir(exist_ok=True)
     farms.to_csv(DATA / "farms.csv", index=False)
