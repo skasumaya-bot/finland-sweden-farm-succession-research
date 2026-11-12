@@ -10,8 +10,8 @@ How can longitudinal ownership registers be processed to identify farm transfers
 ## Project contents
 - `src/pipeline.py` — reproducible Python pipeline
 - `tests/test_pipeline.py` — integrity and reproducibility tests
-- `data/` — synthetic farm, ownership, transfer, and economic outcome records
-- `outputs/` — linked panel, audit, summaries and visualization
+- `data/` — created by running the pipeline: synthetic farm, ownership, transfer, and economic outcome records
+- `outputs/` — created by running the pipeline: linked panel, audit, summaries and visualization
 - `docs/research_design.md` — design, assumptions and limitations
 - `docs/data_dictionary.md` — variable definitions
 
