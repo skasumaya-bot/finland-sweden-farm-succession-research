@@ -1,0 +1,5 @@
+POST_TRANSFER coefficient: 1.0418
+Clustered SE: 0.0347
+P-value: 0.00000
+N: 19200
+Interpretation: descriptive association only; timing may be endogenous.
