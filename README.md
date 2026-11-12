@@ -14,6 +14,8 @@ How can longitudinal ownership registers be processed to identify farm transfers
 - `outputs/` — created by running the pipeline: linked panel, audit, summaries and visualization
 - `docs/research_design.md` — design, assumptions and limitations
 - `docs/data_dictionary.md` — variable definitions
+- `results/` — locally validated sample summary, regression summary, and validation report
+- `.github/workflows/validate.yml` — automated tests and generated data/output artifacts
 
 ## Reproduce
 ```bash
@@ -21,6 +23,12 @@ python -m pip install -r requirements.txt
 python src/pipeline.py
 python -m pytest -q
 ```
+
+## Validated demonstration
+
+The default seeded run produces **800 synthetic farms**, **19,200 farm-years**, and **533 detected and matched transfers**. Four local tests passed. The post-transfer fixed-effects coefficient is **1.0418 percentage points** (clustered SE **0.0347**), which describes only the simulated observations. See [`results/validation_report.md`](results/validation_report.md) for the audit and methodological qualifications.
+
+The full generated datasets and figures are created by running the pipeline and are not committed as source data. A GitHub Actions workflow is configured to generate them as downloadable run artifacts.
 
 ## Research integrity and limitations
 The data are simulated and **cannot** establish the effects of inheritance taxation or describe real farms. Sweden’s 2005 inheritance-tax abolition is not automatically a valid difference-in-differences design. Any causal study requires defensible counterfactuals, adequate before/after exposure, institutional validity, anticipation checks, and appropriate data access.
