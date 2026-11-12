@@ -18,7 +18,7 @@ The outcome model compares years before and after a simulated transfer with farm
 Sweden abolished inheritance and gift taxes in 2005, while Finland retained a different framework. This institutional contrast alone does **not** establish parallel trends or a valid difference-in-differences identification strategy. Additional pre-policy observations, valid controls, relevant risk sets, exposure definitions, and institutional details would be needed.
 
 ## Linking limitations
-- The demonstration creates at most one ownership transition per farm.
+- The demonstration creates at most one ownership transition per farm. Transfer modes and family indicators are recorded once per simulated event and used consistently in the synthetic outcomes and registry.
 - Annual observation gives only yearly event dates.
 - Transfer types and family relations come from an explicitly synthetic registry, not surnames or guessed kinship.
 - Missing records, ownership shares, co-ownership, parcel ownership, identifier re-use, and farm restructuring require additional work before administrative-data application.
